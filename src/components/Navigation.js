@@ -4,7 +4,7 @@ export default class Navigation extends Component {
 
   render() {
     return (
-      <div className="MainPage">
+      <div className="Navigation">
 
       </div>
     );
