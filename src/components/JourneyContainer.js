@@ -7,7 +7,12 @@ export default class JourneyContainer extends Component {
   render() {
     return (
       <div className="JourneyContainer">
-      <JourneyForm />
+      <JourneyForm
+      stations={this.props.stations}
+      handleOriginSearch={this.props.handleOriginSearch}
+      handleDestinationSearch={this.props.handleDestinationSearch}
+      originStation={this.props.originStationFilter}
+      />
       <Results />
 
       </div>

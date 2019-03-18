@@ -4,10 +4,12 @@ import moment from "moment";
 import { Input } from "antd";
 import { DatePicker } from "antd";
 import { Button } from "antd";
+
 const Search = Input.Search;
 
 export default class JourneyForm extends Component {
-  render() {
+
+  render(props) {
     const format = "HH:mm";
     const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
 
@@ -15,21 +17,31 @@ export default class JourneyForm extends Component {
       console.log(date, dateString);
     }
 
+    let stations = this.props.stations;
+    let optionItems = stations.map((station) =>
+            <option key={station.TLC}>{station.Station}</option>
+        );
+
     return (
       <div className="JourneyForm">
         <h1>Enter your journey details</h1>
 
+        <select>
+        {optionItems}
+        </select>
+
         <p>From</p>
         <Search
+          type="search"
           placeholder="Enter origin station"
-          onSearch={value => console.log(value)}
+          onSearch={event => this.props.handleOriginSearch(event)}
           style={{ width: 200 }}
         />
 
         <p>To</p>
         <Search
           placeholder="Enter destination station"
-          onSearch={value => console.log(value)}
+          onSearch={event => this.props.handleDestinationSearch(event)}
           style={{ width: 200 }}
         />
 
