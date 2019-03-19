@@ -9,9 +9,7 @@ export default class JourneyContainer extends Component {
       <div className="JourneyContainer">
       <JourneyForm
       stations={this.props.stations}
-      handleOriginSearch={this.props.handleOriginSearch}
-      handleDestinationSearch={this.props.handleDestinationSearch}
-      originStation={this.props.originStationFilter}
+      handleFormSubmit={this.props.handleFormSubmit}
       />
       <Results />
 

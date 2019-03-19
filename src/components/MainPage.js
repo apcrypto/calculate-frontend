@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import JourneyContainer from '../components/JourneyContainer';
-import Register from '../components/Register.js'
-import Login from '../components/Login.js'
+import Register from '../components/Register'
+import Login from '../components/Login'
 
 
 export default class MainPage extends Component {
@@ -10,10 +10,7 @@ export default class MainPage extends Component {
     return (
       <div className="MainPage">
       <JourneyContainer
-      stations={this.props.stations}
-      handleOriginSearch={this.props.handleOriginSearch}
-      handleDestinationSearch={this.props.handleDestinationSearch}
-      originStation={this.props.originStationFilter}
+      handleFormSubmit={this.props.handleFormSubmit}
       />
       <Register />
       <Login />
