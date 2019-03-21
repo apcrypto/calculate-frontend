@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { STATION_DATA } from "../components/StationData";
-const API = "https://hsp-prod.rockshore.net/api/v1/serviceMetrics";
 
 export default class JourneyForm extends Component {
   constructor(props) {
@@ -12,7 +11,7 @@ export default class JourneyForm extends Component {
       to_time: "",
       from_date: "",
       to_date: "",
-      day: "",
+      days: "",
       price: ""
     };
   }
@@ -23,51 +22,75 @@ export default class JourneyForm extends Component {
     });
   };
 
-  handleTimeChange = event => {
+  handleFromTimeChange = event => {
     const time = event.target.value
     const newTime = time.replace(":","")
     this.setState({ from_time: newTime })
   }
 
-  handleDateChange = event => {
+  handleToTimeChange = event => {
+    const time = event.target.value
+    const newTime = time.replace(":","")
+    this.setState({ to_time: newTime })
+  }
+
+  handleFromDateChange = event => {
     const date = new Date(event.target.value);
     const day = date.getDay();
-    if (day < 6) {
-      this.setState({ day: "WEEKDAY" });
+    if (day === 0) {
+      this.setState({ days: "SUNDAY" });
+    } else if (day === 6) {
+      this.setState({ days: "SATURDAY" });
     } else {
-      this.setState({ day: "WEEKEND" });
+      this.setState({ days: "WEEKDAY" });
     }
     this.setState({ from_date: event.target.value })
   };
 
+  handleToDateChange = event => {
+    const date = new Date(event.target.value);
+    const day = date.getDay();
+    if (day === 0) {
+      this.setState({ days: "SUNDAY" });
+    } else if (day === 6) {
+      this.setState({ days: "SATURDAY" });
+    } else {
+      this.setState({ days: "WEEKDAY" });
+    }
+    this.setState({ to_date: event.target.value })
+  };
+
   createJourney = event => {
-    event.preventDefault();
-    const from_loc = this.state.from_loc;
-    const to_loc = this.state.to_loc;
-    const from_time = this.state.from_time;
-    const to_time = this.state.to_time;
-    const from_date = this.state.from_date;
-    const to_date = this.state.to_date;
-    const days = this.state.day;
-    const formData = {
+    event.preventDefault()
+    const {
       from_loc,
       to_loc,
       from_time,
       to_time,
       from_date,
       to_date,
-      days
-    };
-  };
+      days } = this.state
 
-  journeyPostOne = formData => {
-    fetch("https://hsp-prod.rockshore.net/api/v1/serviceMetrics", {
+    const formData = {
+      journey: {
+        from_loc: from_loc,
+        to_loc: to_loc,
+        from_time: from_time,
+        to_time: to_time,
+        from_date: from_date,
+        to_date: to_date,
+        days: days,
+      }
+    }
+
+    fetch('http://localhost:3000/api/v1/journey_info', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      Authorization: "Basic YW5keXB1cmJyaWNrQGdtYWlsLmNvbTpSZWdnYWUxOTc4Kg==",
       body: JSON.stringify(formData)
-    }).then(resp => resp.json());
-  };
+    })
+    .then( resp => resp.json() )
+    .then( this.props.journeyResult )
+  }
 
   render(props) {
     const stations = STATION_DATA;
@@ -100,33 +123,51 @@ export default class JourneyForm extends Component {
             {optionItems}
           </select>
 
-          <p>Scheduled Depature Time</p>
+          <p>From Time</p>
           <input
             type="time"
-            onChange={this.handleTimeChange}
+            onChange={this.handleFromTimeChange}
             name="from_time"
             style={{ width: 200 }}
           />
 
-          <p>Date</p>
+          <p>To Time</p>
+          <input
+            type="time"
+            onChange={this.handleToTimeChange}
+            name="to_time"
+            style={{ width: 200 }}
+          />
+
+          <p>From Date</p>
           <input
             type="date"
-            onChange={this.handleDateChange}
+            onChange={this.handleFromDateChange}
             name="from_date"
+            style={{ width: 200 }}
+            data-date-format="yyyy-mm-dd"
+          />
+
+          <p>To Date</p>
+          <input
+            type="date"
+            onChange={this.handleToDateChange}
+            name="to_date"
             style={{ width: 200 }}
             data-date-format="yyyy-mm-dd"
           />
 
           <p>Ticket Price</p>
           <input
-            name="to_date"
+            name="price"
             type="number"
             onChange={this.handleChange}
             placeholder="Enter cost of ticket"
             style={{ width: 200 }}
           />
+          <p></p>
           <button
-            onClick={e => this.props.createJourney(this.state, e)}
+            onClick={this.createJourney}
             style={{ width: 200 }}
           >
             Calculate refund

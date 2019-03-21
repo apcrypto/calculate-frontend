@@ -14,19 +14,12 @@ export default class App extends Component {
     };
   }
 
-  handleFormSubmit = (event) => {
-    debugger
-      event.preventDefault();
-      //put fetch here
-  }
-
 
   render() {
     return (
       <div className="App">
       <Navigation />
       <MainPage
-      handleFormSubmit={this.handleFormSubmit}
       />
       </div>
     );
