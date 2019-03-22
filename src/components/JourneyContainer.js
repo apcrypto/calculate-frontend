@@ -6,48 +6,56 @@ export default class JourneyContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      result: "",
-      price: "",
-      refund: "",
-      delay: ""
+      result: '',
+      price: '',
+      refund: '',
+      delay: '',
+      to_loc: '',
     };
+  }
+
+  handleToLocChange = event => {
+    const toLoc = event.target.value
+    this.setState({ to_loc: toLoc })
   }
 
   journeyResult = props => {
     this.setState({ result: props });
-    let arr = this.state.result.serviceAttributesDetails.locations;
-    var lastInArray = arr[arr.length - 1];
-    const scheduledTime = lastInArray.gbtt_pta;
-    const actualTime = lastInArray.actual_ta;
+    const price = this.state.price;
+    const delay = this.state.delay;
+    const arr = this.state.result.serviceAttributesDetails.locations;
+    const toLoc = this.state.to_loc
+    const locObj = arr.find(l => l.location == toLoc)
+    const scheduledTime = locObj.gbtt_pta;
+    const actualTime = locObj.actual_ta;
     const timeDiff = actualTime - scheduledTime;
     this.setState({ delay: timeDiff });
+    debugger
+    if (delay > 30 && delay < 60) {
+      let refund = price /2;
+      this.setState({ refund: refund });
+    } else if (delay > 60) {
+      let refund = price;
+      this.setState({ refund: refund });
+    } else {
+      let refund = "This journey does not qualify for a refund";
+      this.setState({ refund: refund });
+    }
   };
 
   calculateRefund = event => {
     this.setState({ price: event.target.value });
-    const price = this.state.price;
-    const delay = this.state.delay;
-
-    if (delay > 30 < 60) {
-      const refund = price /2;
-      this.setState({ refund: refund });
-    } else if (delay > 60) {
-      const refund = price;
-      this.setState({ refund: refund });
-    } else {
-      const refund = "This journey does not qualify for a refund";
-      this.setState({ refund: refund });
-    }
   };
 
   render() {
     return (
       <div className="JourneyContainer">
         <JourneyForm
+          toLoc={this.state.to_loc}
           journeyResult={this.journeyResult}
           calculateRefund={this.calculateRefund}
+          handleToLocChange={this.handleToLocChange}
         />
-        <Results />
       </div>
     );
   }

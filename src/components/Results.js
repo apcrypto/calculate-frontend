@@ -6,6 +6,7 @@ export default class Results extends Component {
     return (
       <div className="Results">
       
+
       </div>
     );
   }

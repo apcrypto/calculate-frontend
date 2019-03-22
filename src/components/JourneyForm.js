@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Results from "../components/Results";
 import { STATION_DATA } from "../components/StationData";
 
 export default class JourneyForm extends Component {
@@ -6,7 +7,6 @@ export default class JourneyForm extends Component {
     super(props);
     this.state = {
       from_loc: "",
-      to_loc: "",
       from_time: "",
       to_time: "",
       from_date: "",
@@ -15,10 +15,12 @@ export default class JourneyForm extends Component {
     };
   }
 
+
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value
     });
+
   };
 
   handleFromTimeChange = event => {
@@ -63,13 +65,13 @@ export default class JourneyForm extends Component {
     event.preventDefault()
     const {
       from_loc,
-      to_loc,
       from_time,
       to_time,
       from_date,
       to_date,
       days } = this.state
-
+    const  to_loc = this.props.toLoc
+    
     const formData = {
       journey: {
         from_loc: from_loc,
@@ -102,6 +104,7 @@ export default class JourneyForm extends Component {
     return (
       <form className="journey-form">
         <div>
+          <Results />
           <h1>Enter your journey details</h1>
 
           <p>From</p>
@@ -116,7 +119,7 @@ export default class JourneyForm extends Component {
           <p>To</p>
           <select
             name="to_loc"
-            onChange={this.handleChange}
+            onChange={this.props.handleToLocChange}
             style={{ width: 200 }}
           >
             {optionItems}
