@@ -12,7 +12,6 @@ export default class JourneyForm extends Component {
       from_date: "",
       to_date: "",
       days: "",
-      price: ""
     };
   }
 
@@ -161,7 +160,7 @@ export default class JourneyForm extends Component {
           <input
             name="price"
             type="number"
-            onChange={this.handleChange}
+            onChange={this.props.calculateRefund}
             placeholder="Enter cost of ticket"
             style={{ width: 200 }}
           />
