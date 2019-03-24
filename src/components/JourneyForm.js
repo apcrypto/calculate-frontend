@@ -71,7 +71,7 @@ export default class JourneyForm extends Component {
       to_date,
       days } = this.state
     const  to_loc = this.props.toLoc
-    
+
     const formData = {
       journey: {
         from_loc: from_loc,
@@ -104,7 +104,6 @@ export default class JourneyForm extends Component {
     return (
       <form className="journey-form">
         <div>
-          <Results />
           <h1>Enter your journey details</h1>
 
           <p>From</p>
