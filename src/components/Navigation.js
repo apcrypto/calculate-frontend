@@ -1,26 +1,21 @@
 import React, { Component } from "react";
-import { Button } from "antd";
+import '../assets/navigation.css';
 
 
 export default class Navigation extends Component {
 
-  handleChange = event => {
-
-
-  }
-
-
   render() {
     return (
-      <div className="Navigation">
-        <h1>CalcuLate</h1>
-        <a href="https://www.citizensadvice.org.uk/consumer/holiday-cancellations-and-compensation/getting-a-refund-for-a-cancelled-or-delayed-train/">
+      <div className="navigation">
+        <h1 className="logo" >CalcuLate</h1>
+        <a className="help" href="https://www.citizensadvice.org.uk/consumer/holiday-cancellations-and-compensation/getting-a-refund-for-a-cancelled-or-delayed-train/">
           Help
         </a>
-        <a href="">Register</a>
-        <Button style={{ width: 100 }} type="primary">
+        <a className="register" href="">Register</a>
+
+        <button className="signin_button" >
           Sign in
-        </Button>
+        </button>
 
       </div>
     );

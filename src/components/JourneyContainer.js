@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import JourneyForm from "../components/JourneyForm";
 import Results from "../components/Results";
+import "../assets/journey-container.css";
 
 export default class JourneyContainer extends Component {
   constructor(props) {
@@ -11,8 +12,19 @@ export default class JourneyContainer extends Component {
       refund: "",
       delay: "",
       to_loc: "",
-      calculated: false
+      calculated: false,
+      error: "",
     };
+  }
+
+  newJourney = () => {
+    this.setState({
+      calculated: false
+    })
+  }
+
+  journeyError = () => {
+    debugger
   }
 
   handleToLocChange = event => {
@@ -21,9 +33,10 @@ export default class JourneyContainer extends Component {
   };
 
   journeyResult = props => {
-    this.setState({ result: props });
+    const error = props.status
+    this.setState({ error: error, result: props, calculated: true });
+    if(error === 500) { return }
     const price = this.state.price;
-    const delay = this.state.delay;
     const arr = this.state.result.serviceAttributesDetails.locations;
     const toLoc = this.state.to_loc;
     const locObj = arr.find(l => l.location == toLoc);
@@ -31,6 +44,7 @@ export default class JourneyContainer extends Component {
     const actualTime = locObj.actual_ta;
     const timeDiff = actualTime - scheduledTime;
     this.setState({ delay: timeDiff });
+    const delay = this.state.delay;
     if (delay > 30 && delay < 60) {
       let refund = price / 2;
       this.setState({ refund: refund });
@@ -41,7 +55,6 @@ export default class JourneyContainer extends Component {
       let refund = 0;
       this.setState({ refund: refund });
     }
-      this.setState({ calculated: true })
   };
 
   calculateRefund = event => {
@@ -49,32 +62,36 @@ export default class JourneyContainer extends Component {
   };
 
   render() {
-    const calculated = this.state.calculated
-    if(calculated === false) {
-    return (
-      <div className="JourneyContainer">
-        <JourneyForm
-          result={this.state.result}
-          refund={this.state.refund}
-          delay={this.state.delay}
-          toLoc={this.state.to_loc}
-          calculated={this.state.calculated}
-          journeyResult={this.journeyResult}
-          calculateRefund={this.calculateRefund}
-          handleToLocChange={this.handleToLocChange}
-          calculated={this.state.calculated}
-        />
-      </div>
-    );
+    const error = this.state.result.status;
+    const calculated = this.state.calculated;
+    if (calculated) {
+      return (
+        <div>
+          <Results
+            refund={this.state.refund}
+            delay={this.state.delay}
+            calculated={this.state.calculated}
+            newJourney={this.newJourney}
+            error={ error}
+            />
+        </div>
+      );
     } else {
-    return (
-      <div className="Results">
-        <Results
-        refund={this.state.refund}
-        delay={this.state.delay}
-        />
-      </div>
-    );
+      return (
+        <div>
+          <JourneyForm
+            result={this.state.result}
+            refund={this.state.refund}
+            delay={this.state.delay}
+            toLoc={this.state.to_loc}
+            calculated={this.state.calculated}
+            journeyResult={this.journeyResult}
+            calculateRefund={this.calculateRefund}
+            handleToLocChange={this.handleToLocChange}
+            calculated={this.state.calculated}
+          />
+        </div>
+      );
     }
   }
 }
