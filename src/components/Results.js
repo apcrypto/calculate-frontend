@@ -20,7 +20,7 @@ export default class Results extends Component {
         <p className="text">
           There was a {this.props.delay} minute delay to the arrival of your train.
         </p>
-        <p className="text">You are due a refund of £{this.props.refund}</p>
+        <p className="text">You could claim a refund of £{this.props.refund}</p>
       </>
     )
   }

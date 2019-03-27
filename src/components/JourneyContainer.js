@@ -43,6 +43,7 @@ export default class JourneyContainer extends Component {
     const scheduledTime = locObj.gbtt_pta;
     const actualTime = locObj.actual_ta;
     const timeDiff = actualTime - scheduledTime;
+
     this.setState({ delay: timeDiff });
     const delay = this.state.delay;
     if (delay > 30 && delay < 60) {

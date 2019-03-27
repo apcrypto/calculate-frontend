@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import JourneyContainer from '../components/JourneyContainer';
 import Register from '../components/Register'
+import Journeys from '../components/Journeys'
+import API from "../API";
 import "../assets/mainpage.css";
 
 
@@ -25,6 +27,7 @@ export default class MainPage extends Component {
       a full refund if you arrive more than 1 hour late.</p>
       <JourneyContainer />
       <Register />
+      <Journeys />
       </div>
     );
   }
