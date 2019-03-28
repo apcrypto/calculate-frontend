@@ -11,30 +11,35 @@ export default class MainPage extends Component {
   constructor() {
     super();
     this.state = {
-      journeys: null
+      journeys: [],
     };
   }
 
   componentDidMount() {
-  fetch('http://localhost:3000/api/v1/journeys')
+  fetch('http://localhost:3000/api/v1/journeys', {
+    method: 'GET',
+    headers: {'Authorization': localStorage.token}
+  })
     .then(response => response.json())
     .then(data => this.setState({ journeys: data }));
   }
 
 
-  loggedIn = (journeys) => {
-    return this.state.journeys.forEach(journey =>
-      <>
-        <h1 className="title_text">Journey Result</h1>
-        <p className="text">
-        Journey destination: {this.state.arrival_loc}
-        Date of service: {this.state.date_of_service}
-        Price: £{this.state.price}
-        Refund: £{this.state.refund}
-        Delay: {this.state.delay} minutes
-        </p>
-      </>
-    )
+  loggedIn = () => {
+    return this.state.journeys.map(journey => {
+      return (
+        <>
+          <p className="body_text">
+          <p>Journey destination: {journey.arrival_loc}</p>
+          <p>Date of service: {journey.date_of_service}</p>
+          <p>Price: £{journey.price}</p>
+          <p>Refund: £{journey.refund}</p>
+          <p>Delay: {journey.delay} minutes</p>
+          </p>
+        </>
+      )
+    })
+
   }
 
   loggedOut = () => {

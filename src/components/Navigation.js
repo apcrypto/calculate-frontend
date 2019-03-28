@@ -65,7 +65,7 @@ export default class Navigation extends Component {
         <input
           className="password_input"
           name="password"
-          type="text"
+          type="password"
           onChange={this.props.handleChange}
           placeholder="Enter password"
           style={{ width: 225 }}
