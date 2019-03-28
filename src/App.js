@@ -4,6 +4,7 @@ import MainPage from './components/MainPage';
 import SignInForm from './components/SignInForm';
 import station from './assets/station.jpg'
 import API from "./API";
+import { Link } from 'react-router-dom'
 import './App.css';
 
 export default class App extends Component {
@@ -14,7 +15,22 @@ export default class App extends Component {
       email: "",
       password: "",
       localStorage: false,
+      registered: false,
     };
+  }
+
+  handleRegister = () => {
+    const email = this.state.email
+    const password = this.state.password
+
+    return fetch("http://localhost:3000/api/v1/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "application/json"
+      },
+      body: JSON.stringify({email, password})
+    }).then(response => response.json(this.setState({ registered: true })))
   }
 
   handleChange = event =>
@@ -64,13 +80,17 @@ export default class App extends Component {
       <div className="app">
       <div className="layer">
       <Navigation
-      handleChange={this.handleChange}
-      handleSubmit={this.handleSubmit}
-      localStorage={this.state.localStorage}
-      handleLogin={this.handleLogin}
-      handleLogout={this.handleLogout}
+        handleChange={this.handleChange}
+        handleSubmit={this.handleSubmit}
+        localStorage={this.state.localStorage}
+        handleLogin={this.handleLogin}
+        handleLogout={this.handleLogout}
+        handleRegister={this.handleRegister}
+        registered={this.state.registered}
       />
-      <MainPage />
+      <MainPage
+      localStorage={this.state.localStorage}
+      />
       </div>
       </div>
     );

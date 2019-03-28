@@ -25,6 +25,24 @@ export default class Navigation extends Component {
     )
   }
 
+  notRegistered = () => {
+    return (
+      <>
+      <p className="not_registered">Please register to login</p>
+      </>
+    )
+  }
+
+  registered = () => {
+    return (
+      <>
+      <p className="registered">You're now registered and can login</p>
+      </>
+    )
+  }
+
+
+
   render() {
 
     return (
@@ -33,14 +51,14 @@ export default class Navigation extends Component {
         <a className="help" href="https://www.citizensadvice.org.uk/consumer/holiday-cancellations-and-compensation/getting-a-refund-for-a-cancelled-or-delayed-train/">
           Help
         </a>
-        <a className="register" href="">Register</a>
+
 
         <input
           className="user_email"
           name="email"
           type="text"
           onChange={this.props.handleChange}
-          placeholder="Enter email address"
+          placeholder="Enter username"
           style={{ width: 225 }}
         />
 
@@ -59,7 +77,19 @@ export default class Navigation extends Component {
           : this.loggedIn()
         }
 
+        <button className="register_button" onClick={this.props.handleRegister}>
+          Register
+        </button>
+
+        {
+          this.props.registered == true
+          ? this.registered()
+          : this.notRegistered()
+        }
+
       </div>
+
+
     );
   }
 }

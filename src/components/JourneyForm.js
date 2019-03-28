@@ -79,7 +79,7 @@ export default class JourneyForm extends Component {
       to_date,
       days
     } = this.state;
-    
+
     const to_loc = this.props.toLoc;
 
     const formData = {

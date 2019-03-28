@@ -36,13 +36,16 @@ export default class JourneyContainer extends Component {
     const error = props.status
     this.setState({ error: error, result: props, calculated: true });
     if(error === 500) { return }
-    const price = this.state.price;
-    const arr = this.state.result.serviceAttributesDetails.locations;
-    const toLoc = this.state.to_loc;
-    const locObj = arr.find(l => l.location == toLoc);
-    const scheduledTime = locObj.gbtt_pta;
-    const actualTime = locObj.actual_ta;
-    const timeDiff = actualTime - scheduledTime;
+    let price = this.state.price;
+    let arr = this.state.result.serviceAttributesDetails.locations;
+    let toLoc = this.state.to_loc;
+    let locObj = arr.find(l => l.location == toLoc);
+    let scheduledTime = locObj.gbtt_pta;
+    let actualTime = locObj.actual_ta;
+    let timeDiff = actualTime - scheduledTime;
+    let refund = this.state.refund
+    let date_of_service = "2019-03-14"
+    let arrival_loc = toLoc
 
     this.setState({ delay: timeDiff });
     const delay = this.state.delay;
@@ -56,6 +59,16 @@ export default class JourneyContainer extends Component {
       let refund = 0;
       this.setState({ refund: refund });
     }
+
+    return fetch("http://localhost:3000/api/v1/journeys", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": localStorage.getItem('token')
+      },
+      body: JSON.stringify({ arrival_loc, date_of_service, price, refund, delay})
+    }).then(response => response.json(console.log(response)))
+
   };
 
   calculateRefund = event => {
